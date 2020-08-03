@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Add new location</h2>
+<form action="" method="POST">
+    {{ new_loc.hidden_tag() }}
+    <p>
+        {{ new_loc.name.label }}
+        {{ new_loc.name(size=32)}}
+        {% for  error in new_loc.name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        {{ new_loc.description.label }}
+        {{ new_loc.description(size=32) }}
+    </p>
+    <p>{{ new_loc.submit() }}</p>
+</form>
+{% endblock %}

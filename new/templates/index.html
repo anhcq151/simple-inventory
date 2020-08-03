@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Inventory Manager</h1>
+    <a href="{{ url_for('new_item') }}">Add new item</a><br>
+    <a href="{{ url_for('new_location') }}">Add new location</a><br>
+    <a href="{{ url_for('new_name') }}">Add new item name</a><br>
+    <a href="{{ url_for('transfer_item') }}">Transfer item</a><br>
+    <a href="{{ url_for('transfer_log') }}">Transfer history</a>
+    <h1>Asset overview</h1>
+    {% if all_item %}
+        <p><h3>All asset count: {{ all_item }}</h3></p>
+    {% endif %}
+    {% if item_name %}
+        <p>
+            <h3>Asset count by name: </h3>
+            {% for name, count in item_name.items() %}
+                <li>{{ name }}: {{ count }}</li>
+            {% endfor %}
+        </p>
+    {% endif %}
+    {% if item_loc %}
+        <p>
+            <h3>Asset count location:</h3>
+            {% for name, count in item_loc.items() %}
+                <li>{{ name }}: {{ count }}</li>
+            {% endfor %}
+        </p>
+    {% endif %}
+{% endblock %}

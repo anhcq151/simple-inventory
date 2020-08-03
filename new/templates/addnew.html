@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Add new item</h2>
+<form action="" method="POST">
+    {{ add_new.hidden_tag() }}
+    <p>
+        {{ add_new.item_name.label }}
+        {{ add_new.item_name }}<br>
+{#        {{ add_new.serial_number.label }}
+        {{ add_new.serial_number(size=16) }}<br>
+        {% for  error in add_new.serial_number.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br> #}
+        {{ add_new.status.label }}
+        {{ add_new.status }}<br>
+        {% for  error in add_new.status.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+        {{ add_new.location.label }}
+        {{ add_new.location }}<br>
+        {% for  error in add_new.location.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+        {{ add_new.quantity.label }}
+        {{ add_new.quantity }}<br>
+        {% for  error in add_new.quantity.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}<br>
+        {{ add_new.description.label }}
+        {{ add_new.description(rows=1) }}
+        <br>
+    </p>
+    <p>{{ add_new.submit() }}</p>
+</form>
+{% endblock %}

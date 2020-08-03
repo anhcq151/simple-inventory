@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h3>Transfer History</h3>
+{% if log %}
+    <ul>
+        <table>
+            <tr>
+                <th>Asset Name</th>
+                <th>Transfer From</th>
+                <th>Transfer To</th>
+                <th>Transfer Date</th>
+                <th>Transfer Note</th>
+            </tr>
+            {% for item in log %}
+            <tr>
+                <td>{{ item.item_name() }}</td>
+                <td>{{ item.item_loc(item.transfer_from) }}</td>
+                <td>{{ item.item_loc(item.transfer_to) }}</td>
+                <td>{{ datetime.fromtimestamp(float(item.date.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime('%s'))) }}</td>
+                <td>{{ item.description }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </ul>
+{% endif %}
+
+{% endblock %}

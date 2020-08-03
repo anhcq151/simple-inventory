@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Add new item name</h2>
+<form action="" method="POST">
+    {{ new_name.hidden_tag() }}
+    <p>
+        {{ new_name.name.label }}
+        {{ new_name.name(size=32) }}
+        {% for  error in new_name.name.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+    </p>
+    <p>{{ new_name.submit() }}</p>
+</form>
+{% endblock %}
