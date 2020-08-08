@@ -16,7 +16,9 @@ def index():
     all_item = Item.query.filter_by().count()
     item_name = { item.name: Item.query.filter_by(name=item.name).count() for item in ItemName.query.filter_by().all() }
     item_loc = { item.name: itemLocation.query.filter_by(loc_id=item.id).count() for item in Location.query.filter_by().all() }
-    return render_template('index.html', title='Home', all_item=all_item, item_name=item_name, item_loc=item_loc)
+    # item_loc_count = {  }
+    locations = { _location.name: _location.id for _location in Location.query }
+    return render_template('index.html', title='Home', Locations=Location, Item=Item, itemLocation=itemLocation, ItemName=ItemName)
 
 
 @newapp.route('/new_item', methods=['GET', 'POST'])
@@ -87,12 +89,17 @@ def new_location():
 def transfer_item():
     transfer = TransferItem()
     if transfer.validate_on_submit():
-        _to_transfer = Item.query.filter_by(name=transfer.item_name.data.name).limit(transfer.quantity.data)
+        _to_transfer = Item.query.filter_by(name=transfer.item_name.data.name)
+        i = 0
         for item in _to_transfer:
-            _to_move = itemLocation.query.filter_by(item_id=item.id).first()
-            transfer_log = transferLog(item_id=item.id, transfer_from=itemLocation.query.filter_by(item_id=item.id).first().loc_id, transfer_to=transfer.transfer_to.data.id, date=datetime.utcnow(), description=transfer.note.data)
-            _to_move.loc_id = transfer.transfer_to.data.id
-            db.session.add(transfer_log)
+            if item.loc() != transfer.transfer_to.data.name:
+                _to_move = itemLocation.query.filter_by(item_id=item.id).first()
+                transfer_log = transferLog(item_id=item.id, transfer_from=itemLocation.query.filter_by(item_id=item.id).first().loc_id, transfer_to=transfer.transfer_to.data.id, date=datetime.utcnow(), description=transfer.note.data)
+                _to_move.loc_id = transfer.transfer_to.data.id
+                db.session.add(transfer_log)
+                i += 1
+                if i >= transfer.quantity.data:
+                    break
         db.session.commit()
         flash(f'Moved {transfer.quantity.data} asset to {transfer.transfer_to.data.name}')
         return redirect(url_for('index'))

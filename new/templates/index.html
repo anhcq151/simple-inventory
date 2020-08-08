@@ -8,23 +8,30 @@
     <a href="{{ url_for('transfer_item') }}">Transfer item</a><br>
     <a href="{{ url_for('transfer_log') }}">Transfer history</a>
     <h1>Asset overview</h1>
-    {% if all_item %}
-        <p><h3>All asset count: {{ all_item }}</h3></p>
-    {% endif %}
-    {% if item_name %}
-        <p>
-            <h3>Asset count by name: </h3>
-            {% for name, count in item_name.items() %}
-                <li>{{ name }}: {{ count }}</li>
+    <table>
+        <!-- <caption><h3>Asset overview</h3></caption> -->
+        <tr>
+            <td></td>
+            {% for loc in Locations.query %}
+            <th scope="col">{{ loc.name }}</th>
             {% endfor %}
-        </p>
-    {% endif %}
-    {% if item_loc %}
-        <p>
-            <h3>Asset count location:</h3>
-            {% for name, count in item_loc.items() %}
-                <li>{{ name }}: {{ count }}</li>
+            <td></td>
+        </tr>
+        {% for name in ItemName.query %}
+        <tr>
+            <th scope="row">{{ name.name }}</th>
+            {% for loc in Locations.query %}
+            <td>{{ Item.query.filter_by(name=name.name).join(itemLocation, Item.id==itemLocation.item_id).filter_by(loc_id=loc.id).count() }}</td>
             {% endfor %}
-        </p>
-    {% endif %}
+            <td>{{ Item.query.filter_by(name=name.name).count() }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td></td>
+            {% for loc in Locations.query %}
+            <td>{{ itemLocation.query.filter_by(loc_id=loc.id).count() }}</td>
+            {% endfor %}
+            <td>{{ Item.query.count() }}</td>
+        </tr>
+    </table>
 {% endblock %}
