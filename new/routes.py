@@ -16,7 +16,6 @@ def index():
     all_item = Item.query.filter_by().count()
     item_name = { item.name: Item.query.filter_by(name=item.name).count() for item in ItemName.query.filter_by().all() }
     item_loc = { item.name: itemLocation.query.filter_by(loc_id=item.id).count() for item in Location.query.filter_by().all() }
-    # item_loc_count = {  }
     locations = { _location.name: _location.id for _location in Location.query }
     return render_template('index.html', title='Home', Locations=Location, Item=Item, itemLocation=itemLocation, ItemName=ItemName)
 
@@ -34,6 +33,9 @@ def new_item():
             db.session.commit()
         flash('Successfully Added new item!!')
         return redirect(url_for('index'))
+
+# Below code block is used for creating items strictly with serial number
+#
         # serial_check = Item.query.filter_by(serial=add_new.serial_number.data).first()
         # if serial_check is None:
         #     new_item = Item(name=add_new.item_name.data.name, serial=add_new.serial_number.data, status=add_new.status.data, description=add_new.description.data)
@@ -47,6 +49,8 @@ def new_item():
         # else:
         #     flash(f'Item with serial {add_new.serial_number.data} is already existed')
         #     return redirect(url_for('new_item'))
+#
+# End code block
 
     return render_template('addnew.html', title='Add new item', add_new=add_new)
 
@@ -104,6 +108,8 @@ def transfer_item():
         flash(f'Moved {transfer.quantity.data} asset to {transfer.transfer_to.data.name}')
         return redirect(url_for('index'))
 
+# Below code block is used for transferring items strictly with serial number
+#
         # item_to_transfer = Item.query.filter_by(serial=transfer.item_serial.data).first()
         # if item_to_transfer is not None:
         #     item_new_loc = itemLocation.query.filter_by(item_id=item_to_transfer.id).first()
@@ -116,8 +122,10 @@ def transfer_item():
         # else:
         #     flash('No item with mentioned serial number')
         #     return redirect(url_for('transfer_item'))
-    item_per_name = { item.name:Item.query.filter_by(name=item.name).all() for item in ItemName.query }
-    return render_template('transfer.html', title='Transfer item', transfer=transfer, item_per_name=item_per_name)
+#
+# End code block
+
+    return render_template('transfer.html', title='Transfer item', transfer=transfer, Locations=Location, Item=Item, itemLocation=itemLocation, ItemName=ItemName)
 
 
 @newapp.route('/transfer_log')

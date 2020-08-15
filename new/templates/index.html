@@ -7,31 +7,5 @@
     <a href="{{ url_for('new_name') }}">Add new item name</a><br>
     <a href="{{ url_for('transfer_item') }}">Transfer item</a><br>
     <a href="{{ url_for('transfer_log') }}">Transfer history</a>
-    <h1>Asset overview</h1>
-    <table>
-        <!-- <caption><h3>Asset overview</h3></caption> -->
-        <tr>
-            <td></td>
-            {% for loc in Locations.query %}
-            <th scope="col">{{ loc.name }}</th>
-            {% endfor %}
-            <td></td>
-        </tr>
-        {% for name in ItemName.query %}
-        <tr>
-            <th scope="row">{{ name.name }}</th>
-            {% for loc in Locations.query %}
-            <td>{{ Item.query.filter_by(name=name.name).join(itemLocation, Item.id==itemLocation.item_id).filter_by(loc_id=loc.id).count() }}</td>
-            {% endfor %}
-            <td>{{ Item.query.filter_by(name=name.name).count() }}</td>
-        </tr>
-        {% endfor %}
-        <tr>
-            <td></td>
-            {% for loc in Locations.query %}
-            <td>{{ itemLocation.query.filter_by(loc_id=loc.id).count() }}</td>
-            {% endfor %}
-            <td>{{ Item.query.count() }}</td>
-        </tr>
-    </table>
+    {% include "_asset_table.html" %}
 {% endblock %}

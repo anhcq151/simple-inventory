@@ -1,0 +1,26 @@
+<table>
+    <caption><h2>Asset overview</h2></caption>
+    <tr>
+        <td></td>
+        {% for loc in Locations.query %}
+        <th scope="col">{{ loc.name }}</th>
+        {% endfor %}
+        <td>Total</td>
+    </tr>
+    {% for name in ItemName.query %}
+    <tr>
+        <th scope="row">{{ name.name }}</th>
+        {% for loc in Locations.query %}
+        <td>{{ Item.query.filter_by(name=name.name).join(itemLocation, Item.id==itemLocation.item_id).filter_by(loc_id=loc.id).count() }}</td>
+        {% endfor %}
+        <td>{{ Item.query.filter_by(name=name.name).count() }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td>Total</td>
+        {% for loc in Locations.query %}
+        <td>{{ itemLocation.query.filter_by(loc_id=loc.id).count() }}</td>
+        {% endfor %}
+        <td>{{ Item.query.count() }}</td>
+    </tr>
+</table>

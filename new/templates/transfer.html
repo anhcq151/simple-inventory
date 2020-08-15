@@ -24,7 +24,9 @@
     <p>{{ transfer.submit() }}</p>
 </form>
 
-{% if item_per_name %}
+{% include "_asset_table.html" %}
+
+{#{% if item_per_name %}
     {% for key in item_per_name %}
     <p><li><b>{{ key }}</b></li>
         <table>
@@ -43,6 +45,6 @@
         </table>
     </p>
     {% endfor %}
-{% endif %}
+{% endif %}#}
 
 {% endblock %}
