@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Inventory Manager</h1>
-    <a href="{{ url_for('new_item') }}">Add new item</a><br>
-    <a href="{{ url_for('new_location') }}">Add new location</a><br>
-    <a href="{{ url_for('new_name') }}">Add new item name</a><br>
-    <a href="{{ url_for('transfer_item') }}">Transfer item</a><br>
-    <a href="{{ url_for('transfer_log') }}">Transfer history</a>
+    <table>
+        <caption><h1>Inventory Manager</h1></caption>
+        <tr>
+            <th style="text-align: center;"><a href="{{ url_for('new_item') }}">Add new item</a></th>
+            <th style="text-align: center;"><a href="{{ url_for('new_location') }}">Add new location</a></th>
+            <th style="text-align: center;"><a href="{{ url_for('new_name') }}">Add new item name</a></th>
+            <th style="text-align: center;"><a href="{{ url_for('transfer_item') }}">Transfer item</a></th>
+            <th style="text-align: center;"><a href="{{ url_for('transfer_log') }}">Transfer history</a></th>
+        </tr>
+    </table>
     {% include "_asset_table.html" %}
 {% endblock %}

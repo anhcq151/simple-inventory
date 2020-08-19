@@ -9,3 +9,6 @@ db = SQLAlchemy(newapp)
 migrate = Migrate(newapp, db)
 
 from new import new, routes, models
+
+db.create_all()
+db.session.commit()
