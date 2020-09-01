@@ -15,6 +15,17 @@ def get_item_name():
 def get_item_loc():
     return Location.query
 
+class SerialValidate():
+    def __init__(self, message=None):
+        if not message:
+            message = 'Serial Number is already existed'
+        self.message = message
+
+    def __call__(self, form, field):
+        s = Item.query.filter_by(serial=field.data).first()
+        if s is not None:
+            raise ValidationError(self.message)
+
 
 class NewItemForm(FlaskForm):
     item_name = QuerySelectField('Name', validators=[DataRequired('Select name')], query_factory=get_item_name)
@@ -24,6 +35,16 @@ class NewItemForm(FlaskForm):
     location = QuerySelectField('Location', validators=[DataRequired('Select location')], query_factory=get_item_loc)
     quantity = IntegerField('Quantity', validators=[DataRequired(), NumberRange(1, 100)])
     submit = SubmitField('Submit')
+
+
+class EditItem(FlaskForm):
+    serial = StringField('Serial Number', validators=[SerialValidate()])
+    status = SelectField('Status', choices=[('new', 'New'), ('in_used', 'In-Used'), ('out_dated', 'Out-dated')])
+    description = TextAreaField('Description', validators=[Length(min=0, max=200)])
+    location = QuerySelectField('Location', query_factory=get_item_loc)
+    submit = SubmitField('Submit')
+
+
 
 
 class NewNameForm(FlaskForm):

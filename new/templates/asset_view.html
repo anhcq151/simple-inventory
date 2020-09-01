@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <table>
+        <caption><h2>Item Details</h2></caption>
+        <tr>
+            <th>Item Name</th>
+            <th>{{ selected_item.name }}</th>
+        </tr>
+        <tr>
+            <td>Serial Number</td>
+            <td>{{ selected_item.serial }}</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>{{ selected_item.status }}</td>
+        </tr>
+        <tr>
+            <td>Location</td>
+            <td>{{ selected_item.loc() }}</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>{{ selected_item.description }}</td>
+        </tr>
+    </table>
+    </br>
+    <button type="button" onclick="window.location.href='{{ url_for('asset_change', asset_id=selected_item.id) }}'">Edit Item</button>
+    {% if transfer_log.count() > 0 %}
+    <table>
+        <caption><h3>Transfer History</h3></caption>
+            <tr>
+                <th>Transfer From</th>
+                <th>Transfer To</th>
+                <th>Transfer Date</th>
+                <th>Transfer Note</th>
+            </tr>
+            {% for item in transfer_log %}
+            <tr>
+                <td>{{ item.item_loc()[0] }}</td>
+                <td>{{ item.item_loc()[1] }}</td>
+                <td>{{ datetime.fromtimestamp(float(item.date.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime('%s'))) }}</td>
+                <td>{{ item.description }}</td>
+            </tr>
+            {% endfor %}
+    </table>
+    {% endif %}
+{% endblock %}

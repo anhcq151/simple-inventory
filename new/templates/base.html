@@ -25,8 +25,8 @@
     </head>
     <body>
         <div>
-            Inventory:
-            <a href="{{ url_for('index') }}">Home</a>
+            <b>INVENTORY:</b>
+            <button type="button" onclick="window.location.href='{{ url_for('index') }}'">Home</button>
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}

@@ -4,11 +4,11 @@
     <table>
         <caption><h1>Inventory Manager</h1></caption>
         <tr>
-            <th style="text-align: center;"><a href="{{ url_for('new_item') }}">Add new item</a></th>
-            <th style="text-align: center;"><a href="{{ url_for('new_location') }}">Add new location</a></th>
-            <th style="text-align: center;"><a href="{{ url_for('new_name') }}">Add new item name</a></th>
-            <th style="text-align: center;"><a href="{{ url_for('transfer_item') }}">Transfer item</a></th>
-            <th style="text-align: center;"><a href="{{ url_for('transfer_log') }}">Transfer history</a></th>
+            <th style="text-align: center; border: 0px;"><button type="button" onclick="window.location.href='{{ url_for('new_item') }}'">Add new items</button></th>
+            <th style="text-align: center; border:0px"><button type="button" onclick="window.location.href='{{ url_for('new_location') }}'">Add new location</button></th>
+            <th style="text-align: center; border:0px"><button type="button" onclick="window.location.href='{{ url_for('new_name') }}'">Add new asset name</button></th>
+            <th style="text-align: center; border:0px"><button type="button" onclick="window.location.href='{{ url_for('transfer_item') }}'">Transfer assets</button></th>
+            <th style="text-align: center; border:0px"><button type="button" onclick="window.location.href='{{ url_for('transfer_log') }}'">Transfer history</button></th>
         </tr>
     </table>
     {% include "_asset_table.html" %}

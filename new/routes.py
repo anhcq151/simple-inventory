@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from new import newapp, db
-from new.forms import NewItemForm, NewNameForm, NewLocationForm, TransferItem
+from new.forms import *
 from new.models import ItemName, Item, Location, itemLocation, transferLog
 from werkzeug.urls import url_parse
 from datetime import datetime, timezone
@@ -13,11 +13,42 @@ from wtforms.validators import DataRequired
 @newapp.route('/')
 @newapp.route('/index')
 def index():
-    all_item = Item.query.filter_by().count()
-    item_name = { item.name: Item.query.filter_by(name=item.name).count() for item in ItemName.query.filter_by().all() }
-    item_loc = { item.name: itemLocation.query.filter_by(loc_id=item.id).count() for item in Location.query.filter_by().all() }
-    locations = { _location.name: _location.id for _location in Location.query }
+
     return render_template('index.html', title='Home', Locations=Location, Item=Item, itemLocation=itemLocation, ItemName=ItemName)
+
+
+@newapp.route('/<asset_name>')
+def asset_per_name(asset_name):
+    assets = Item.query.filter_by(name=asset_name)
+
+    return render_template('assets_per_name.html', title='Assets list', asset_name=asset_name, assets=assets)
+
+
+@newapp.route('/asset/<asset_id>')
+def asset_view(asset_id):
+    selected_item = Item.query.get(asset_id)
+    transfer_log = transferLog.query.filter_by(item_id=asset_id)
+
+    return render_template('asset_view.html', title='Asset View', selected_item=selected_item, transfer_log=transfer_log, datetime=datetime, timezone=timezone, float=float)
+
+
+@newapp.route('/asset/<asset_id>/edit', methods=['GET', 'POST'])
+def asset_change(asset_id):
+    selected_item = Item.query.get(asset_id)
+    edit_form = EditItem(serial=selected_item.serial, status=selected_item.status, location=selected_item.loc(), description=selected_item.description)
+    if edit_form.validate_on_submit():
+        if edit_form.serial.data is not None:
+            selected_item.serial = edit_form.serial.data
+        if edit_form.status.data != selected_item.status:
+            selected_item.status = edit_form.status.data 
+        if edit_form.description.data != selected_item.description:
+            selected_item.description = edit_form.description.data
+        db.session.commit()
+        flash('Successfully updated item information!')
+        
+        return redirect(url_for('asset_view', asset_id=asset_id))
+
+    return render_template('asset_edit.html', title='Edit Item', selected_item=selected_item, edit_form=edit_form)
 
 
 @newapp.route('/new_item', methods=['GET', 'POST'])
@@ -32,6 +63,7 @@ def new_item():
             db.session.add(new_asset_loc)
             db.session.commit()
         flash('Successfully Added new item!!')
+
         return redirect(url_for('index'))
 
 # Below code block is used for creating items strictly with serial number
@@ -65,10 +97,13 @@ def new_name():
             db.session.add(name)
             db.session.commit()
             flash(f'{name.name} is added!')
+
             return redirect(url_for('index'))
         else:
             flash(f'{new_name.name.data} item name is already existed, please choose another name!')
+
             return redirect(url_for('new_name'))
+
     return render_template('new_name.html', title='Add new item name', new_name=new_name)
 
 
@@ -82,10 +117,13 @@ def new_location():
             db.session.add(loc)
             db.session.commit()
             flash(f'{loc.name} is added successfully!!')
+
             return redirect(url_for('index'))
         else:
             flash(f'{new_loc.name.data} location name is already existed, please choose another name!!')
+
             return redirect(url_for('new_location'))
+
     return render_template('new_loc.html', title='Add new location', new_loc=new_loc)
 
 
@@ -106,6 +144,7 @@ def transfer_item():
                     break
         db.session.commit()
         flash(f'Moved {transfer.quantity.data} asset to {transfer.transfer_to.data.name}')
+
         return redirect(url_for('index'))
 
 # Below code block is used for transferring items strictly with serial number

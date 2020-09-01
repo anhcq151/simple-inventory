@@ -5,7 +5,7 @@
         {% for loc in Locations.query %}
         <th style="text-align: center;", scope="col", colspan="2">{{ loc.name }}</th>
         {% endfor %}
-        <td style="text-align: center;", colspan="2">Total</td>
+        <th style="text-align: center;", colspan="2">Total</th>
     </tr>
     <tr>
         {% for loc in Locations.query %}
@@ -17,9 +17,8 @@
     </tr>
     {% for name in ItemName.query %}
     <tr>
-        <th scope="row">{{ name.name }}</th>
+        <th scope="row"><button type="button" onclick="window.location.href='{{ url_for('asset_per_name', asset_name=name.name) }}'">{{ name.name }}</button></th>
         {% for loc in Locations.query %}
-        {#<td>{{ Item.query.filter_by(name=name.name).join(itemLocation, Item.id==itemLocation.item_id).filter_by(loc_id=loc.id).count() }}</td>#}
         <td>{{ Item.query.filter(Item.name == name.name, Item.status != 'out_dated').join(itemLocation, Item.id == itemLocation.item_id).filter_by(loc_id=loc.id).count() }}</td>
         <td>{{ Item.query.filter(Item.name == name.name, Item.status == 'out_dated').join(itemLocation, Item.id == itemLocation.item_id).filter_by(loc_id=loc.id).count() }}</td>
         {% endfor %}
@@ -28,7 +27,7 @@
     </tr>
     {% endfor %}
     <tr>
-        <td>Total</td>
+        <th>Total</th>
         {% for loc in Locations.query %}
         <td>{{ itemLocation.query.filter_by(loc_id=loc.id).join(Item, itemLocation.item_id == Item.id).filter(Item.status != 'out_dated').count() }}</td>
         <td>{{ itemLocation.query.filter_by(loc_id=loc.id).join(Item, itemLocation.item_id == Item.id).filter(Item.status == 'out_dated').count() }}</td>

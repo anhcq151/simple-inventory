@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="" method="POST">
+    {{ edit_form.hidden_tag() }}
+    <table>
+        <caption><h2>Edit Item</h2></caption>
+        <tr>
+            <th>Item Name</th>
+            <th>{{ selected_item.name }}</th>
+        </tr>
+        <tr>
+            <td>{{ edit_form.serial.label }}</td>
+            <td>
+                {{ edit_form.serial }}
+                {% for error in edit_form.serial.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td>{{ edit_form.status.label }}</td>
+            <td>
+                {{ edit_form.status }}
+                {% for error in edit_form.status.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td>{{ edit_form.location.label }}</td>
+            <td>
+                {{ edit_form.location }}
+                {% for error in edit_form.location.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <td>{{ edit_form.description.label }}</td>
+            <td>
+                {{ edit_form.description }}
+                {% for error in edit_form.description.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+    <p>{{ edit_form.submit() }}</p>
+
+{% endblock %}

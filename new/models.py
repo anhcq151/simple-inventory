@@ -27,7 +27,7 @@ class Item(db.Model):
     def loc(self):
         _item_loc_id = itemLocation.query.filter_by(item_id=self.id).first()
         _item_loc_name = Location.query.filter_by(id=_item_loc_id.loc_id).first()
-        return _item_loc_name.name
+        return _item_loc_name
 
 
 class Location(db.Model):

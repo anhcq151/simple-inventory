@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <table>
+        <caption><h1>{{ asset_name }} - All {{ assets.count() }} items</h1></caption>
+        <tr>
+            <th></th>
+            <th>Serial Number</th>
+            <th>Status</th>
+            <th>Location</th>
+            <th>Description</th>
+        </tr>
+        {% for asset in assets %}
+        <tr>
+            <td><button type="button" onclick="window.location.href='{{ url_for('asset_view', asset_id=asset.id) }}'">{{ loop.index }}</button></td>
+            <td>{{ asset.serial }}</td>
+            <td>{{ asset.status }}</td>
+            <td>{{ asset.loc() }}</td>
+            <td>{{ asset.description }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
