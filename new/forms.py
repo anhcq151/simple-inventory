@@ -15,17 +15,6 @@ def get_item_name():
 def get_item_loc():
     return Location.query
 
-class SerialValidate():
-    def __init__(self, message=None):
-        if not message:
-            message = 'Serial Number is already existed'
-        self.message = message
-
-    def __call__(self, form, field):
-        s = Item.query.filter_by(serial=field.data).first()
-        if s is not None:
-            raise ValidationError(self.message)
-
 
 class NewItemForm(FlaskForm):
     item_name = QuerySelectField('Name', validators=[DataRequired('Select name')], query_factory=get_item_name)
@@ -38,13 +27,12 @@ class NewItemForm(FlaskForm):
 
 
 class EditItem(FlaskForm):
-    serial = StringField('Serial Number', validators=[SerialValidate()])
+    serial = StringField('Serial Number')
     status = SelectField('Status', choices=[('new', 'New'), ('in_used', 'In-Used'), ('out_dated', 'Out-dated')])
     description = TextAreaField('Description', validators=[Length(min=0, max=200)])
     location = QuerySelectField('Location', query_factory=get_item_loc)
+    transfer_note = TextAreaField('Transfer Note (If change location)', validators=[Length(min=0, max=400)])
     submit = SubmitField('Submit')
-
-
 
 
 class NewNameForm(FlaskForm):
@@ -55,13 +43,4 @@ class NewNameForm(FlaskForm):
 class NewLocationForm(FlaskForm):
     name = StringField('Location Name', validators=[DataRequired()])
     description = StringField('Location Detail')
-    submit = SubmitField('Submit')
-
-
-class TransferItem(FlaskForm):
-    item_name = QuerySelectField('Item Name', validators=[DataRequired('Select name')], query_factory=get_item_name)
-    # item_serial = StringField('Item Serial')
-    transfer_to = QuerySelectField('Transfer to', validators=[DataRequired('Transfer To')], query_factory=get_item_loc)
-    note = TextAreaField('Transfer Note', validators=[Length(min=0, max=400)])
-    quantity = IntegerField('Quantity', validators=[DataRequired(), NumberRange(1, 100)])
     submit = SubmitField('Submit')

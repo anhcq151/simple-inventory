@@ -19,7 +19,9 @@ class Item(db.Model):
     serial = db.Column(db.String(64), index=True, unique=True)
     status = db.Column(db.String(32), index=True)
     description = db.Column(db.String(256), index=True)
-    transfer_log_item = db.relationship('transferLog', backref='Transfer History', lazy='dynamic')
+    import_date = db.Column(db.DateTime, default=datetime.utcnow)
+    transfer_log_item = db.relationship('transferLog', foreign_keys='transferLog.item_id', backref='Transfer History', lazy='dynamic')
+    change_log_item = db.relationship('itemChangeLog', foreign_keys='itemChangeLog.item_id', backref='Change History', lazy='dynamic')
 
     def __repr__(self):
         return f'{self.name}\nSerial: {self.serial}\nStatus: {self.status}'
@@ -64,3 +66,11 @@ class transferLog(db.Model):
         _loc_id_to = itemLocation.query.filter_by(loc_id=self.transfer_to).first()
         return Location.query.filter_by(id=_loc_id_from.loc_id).first().name, Location.query.filter_by(id=_loc_id_to.loc_id).first().name
 
+
+class itemChangeLog(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    item_id = db.Column(db.Integer, db.ForeignKey('item.id'))
+    attrib_name = db.Column(db.String(32))
+    old_value = db.Column(db.String(64))
+    new_value = db.Column(db.String(64))
+    date = db.Column(db.DateTime, index=True, default=datetime.utcnow)

@@ -4,10 +4,10 @@ My very first python webapp, using Flask. (STILL IN DEVELOPMENT...)
 
 Containing basic features which match my personal requirements:
 
-- Asset name/type
-- Asset location
-- Transfer assets
+- Asset information: name/type, location, status, description
+- Edit single asset item information
 - Transfer log
+- Item information change log
 
 ## Install
 

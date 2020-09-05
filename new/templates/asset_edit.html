@@ -11,27 +11,21 @@
         </tr>
         <tr>
             <td>{{ edit_form.serial.label }}</td>
-            <td>
-                {{ edit_form.serial }}
-                {% for error in edit_form.serial.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </td>
+            <td>{{ edit_form.serial }}</td>
         </tr>
         <tr>
             <td>{{ edit_form.status.label }}</td>
-            <td>
-                {{ edit_form.status }}
-                {% for error in edit_form.status.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </td>
+            <td>{{ edit_form.status }}</td>
         </tr>
         <tr>
             <td>{{ edit_form.location.label }}</td>
+            <td>{{ edit_form.location }}</td>
+        </tr>
+        <tr>
+            <td>{{ edit_form.transfer_note.label }}</td>
             <td>
-                {{ edit_form.location }}
-                {% for error in edit_form.location.errors %}
+                {{ edit_form.transfer_note }}
+                {% for error in edit_form.transfer_note.errors %}
                 <span style="color: red;">[{{ error }}]</span>
                 {% endfor %}
             </td>

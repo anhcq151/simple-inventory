@@ -23,6 +23,10 @@
             <td>Description</td>
             <td>{{ selected_item.description }}</td>
         </tr>
+        <tr>
+            <td>Import Date</td>
+            <td>{{ datetime.fromtimestamp(float(selected_item.import_date.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime('%s'))) }}</td>
+        </tr>
     </table>
     </br>
     <button type="button" onclick="window.location.href='{{ url_for('asset_change', asset_id=selected_item.id) }}'">Edit Item</button>
@@ -41,6 +45,25 @@
                 <td>{{ item.item_loc()[1] }}</td>
                 <td>{{ datetime.fromtimestamp(float(item.date.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime('%s'))) }}</td>
                 <td>{{ item.description }}</td>
+            </tr>
+            {% endfor %}
+    </table>
+    {% endif %}
+    {% if change_log.count() > 0 %}
+    <table>
+        <caption><h3>Change History</h3></caption>
+            <tr>
+                <th>Attribute Name</th>
+                <th>Old Value</th>
+                <th>New Value</th>
+                <th>Time of Change</th>
+            </tr>
+            {% for item in change_log %}
+            <tr>
+                <td>{{ item.attrib_name }}</td>
+                <td>{{ item.old_value }}</td>
+                <td>{{ item.new_value }}</td>
+                <td>{{ datetime.fromtimestamp(float(item.date.replace(tzinfo=timezone.utc).astimezone(tz=None).strftime('%s'))) }}</td>
             </tr>
             {% endfor %}
     </table>

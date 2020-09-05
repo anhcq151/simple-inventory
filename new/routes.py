@@ -1,7 +1,8 @@
 from flask import render_template, flash, redirect, url_for, request
+from sqlalchemy import inspect
 from new import newapp, db
 from new.forms import *
-from new.models import ItemName, Item, Location, itemLocation, transferLog
+from new.models import ItemName, Item, Location, itemLocation, transferLog, itemChangeLog
 from werkzeug.urls import url_parse
 from datetime import datetime, timezone
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
@@ -28,27 +29,71 @@ def asset_per_name(asset_name):
 def asset_view(asset_id):
     selected_item = Item.query.get(asset_id)
     transfer_log = transferLog.query.filter_by(item_id=asset_id)
+    change_log = itemChangeLog.query.filter_by(item_id=asset_id)
 
-    return render_template('asset_view.html', title='Asset View', selected_item=selected_item, transfer_log=transfer_log, datetime=datetime, timezone=timezone, float=float)
+    return render_template('asset_view.html', title='Asset View', selected_item=selected_item, transfer_log=transfer_log, change_log=change_log, datetime=datetime, timezone=timezone, float=float)
 
 
 @newapp.route('/asset/<asset_id>/edit', methods=['GET', 'POST'])
 def asset_change(asset_id):
     selected_item = Item.query.get(asset_id)
-    edit_form = EditItem(serial=selected_item.serial, status=selected_item.status, location=selected_item.loc(), description=selected_item.description)
+    edit_form = EditItem(
+        serial=selected_item.serial, 
+        status=selected_item.status, 
+        location=selected_item.loc(), 
+        description=selected_item.description
+    )
     if edit_form.validate_on_submit():
-        if edit_form.serial.data is not None:
+        if edit_form.serial.data == selected_item.serial:
+            pass
+
+        elif edit_form.serial.data != selected_item.serial and Item.query.filter_by(serial=edit_form.serial.data).first().id != selected_item.id:
+            flash('Serial Number is already existed')
+
+            return redirect(url_for('asset_change', asset_id=asset_id))
+
+        else:
+            change_log_serial = itemChangeLog(item_id=asset_id)
+            change_log_serial.attrib_name = 'Serial Number'
+            change_log_serial.old_value = selected_item.serial
             selected_item.serial = edit_form.serial.data
+            change_log_serial.new_value = selected_item.serial
+            db.session.add(change_log_serial)
+
         if edit_form.status.data != selected_item.status:
+            change_log_status = itemChangeLog(item_id=asset_id)
+            change_log_status.attrib_name = 'Status'
+            change_log_status.old_value = selected_item.status
             selected_item.status = edit_form.status.data 
+            change_log_status.new_value = selected_item.status
+            db.session.add(change_log_status)
+
+        if edit_form.location.data != selected_item.loc():
+            _move = itemLocation.query.filter_by(item_id=asset_id).first()
+            transfer_log = transferLog(
+                    item_id=asset_id, 
+                    transfer_from=selected_item.loc().id, 
+                    transfer_to=edit_form.location.data.id, 
+                    date=datetime.utcnow(), 
+                    description=edit_form.transfer_note.data
+                )
+            _move.loc_id = edit_form.location.data.id
+            db.session.add(transfer_log)
+
         if edit_form.description.data != selected_item.description:
+            change_log_description = itemChangeLog(item_id=asset_id)
+            change_log_description.attrib_name = 'Description'
+            change_log_description.old_value = selected_item.description
             selected_item.description = edit_form.description.data
+            change_log_description.new_value = selected_item.description
+            db.session.add(change_log_description)
+        
         db.session.commit()
         flash('Successfully updated item information!')
         
         return redirect(url_for('asset_view', asset_id=asset_id))
 
-    return render_template('asset_edit.html', title='Edit Item', selected_item=selected_item, edit_form=edit_form)
+    return render_template('asset_edit.html', title='Edit Item', selected_item=selected_item, edit_form=edit_form, datetime=datetime, timezone=timezone, float=float)
 
 
 @newapp.route('/new_item', methods=['GET', 'POST'])
@@ -56,10 +101,17 @@ def new_item():
     add_new = NewItemForm()
     if add_new.validate_on_submit():
         for i in range(add_new.quantity.data):
-            new_asset = Item(name=add_new.item_name.data.name, status=add_new.status.data, description=add_new.description.data)
+            new_asset = Item(
+                name=add_new.item_name.data.name, 
+                status=add_new.status.data, 
+                description=add_new.description.data
+            )
             db.session.add(new_asset)
             db.session.commit()
-            new_asset_loc = itemLocation(item_id=new_asset.id, loc_id=add_new.location.data.id)
+            new_asset_loc = itemLocation(
+                item_id=new_asset.id, 
+                loc_id=add_new.location.data.id
+            )
             db.session.add(new_asset_loc)
             db.session.commit()
         flash('Successfully Added new item!!')
@@ -113,7 +165,10 @@ def new_location():
     if new_loc.validate_on_submit():
         loc = Location.query.filter_by(name=new_loc.name.data).first()
         if loc is None:
-            loc = Location(name=new_loc.name.data, description=new_loc.description.data)
+            loc = Location(
+                name=new_loc.name.data, 
+                description=new_loc.description.data
+            )
             db.session.add(loc)
             db.session.commit()
             flash(f'{loc.name} is added successfully!!')
@@ -125,46 +180,6 @@ def new_location():
             return redirect(url_for('new_location'))
 
     return render_template('new_loc.html', title='Add new location', new_loc=new_loc)
-
-
-@newapp.route('/transfer', methods=['GET', 'POST'])
-def transfer_item():
-    transfer = TransferItem()
-    if transfer.validate_on_submit():
-        _to_transfer = Item.query.filter_by(name=transfer.item_name.data.name)
-        i = 0
-        for item in _to_transfer:
-            if item.loc() != transfer.transfer_to.data.name:
-                _to_move = itemLocation.query.filter_by(item_id=item.id).first()
-                transfer_log = transferLog(item_id=item.id, transfer_from=itemLocation.query.filter_by(item_id=item.id).first().loc_id, transfer_to=transfer.transfer_to.data.id, date=datetime.utcnow(), description=transfer.note.data)
-                _to_move.loc_id = transfer.transfer_to.data.id
-                db.session.add(transfer_log)
-                i += 1
-                if i >= transfer.quantity.data:
-                    break
-        db.session.commit()
-        flash(f'Moved {transfer.quantity.data} asset to {transfer.transfer_to.data.name}')
-
-        return redirect(url_for('index'))
-
-# Below code block is used for transferring items strictly with serial number
-#
-        # item_to_transfer = Item.query.filter_by(serial=transfer.item_serial.data).first()
-        # if item_to_transfer is not None:
-        #     item_new_loc = itemLocation.query.filter_by(item_id=item_to_transfer.id).first()
-        #     item_new_loc.loc_id = transfer.transfer_to.data.id
-        #     transfer_log = transferLog(item_id=item_to_transfer.id, transfer_from=itemLocation.query.filter_by(item_id=item_to_transfer.id).first().loc_id, transfer_to=item_new_loc.loc_id, date=datetime.utcnow(), description=transfer.note.data)
-        #     db.session.add(transfer_log)
-        #     db.session.commit()
-        #     flash(f'Moved item with serial {item_to_transfer.serial} to {transfer.transfer_to.data.name}')
-        #     return redirect(url_for('index'))
-        # else:
-        #     flash('No item with mentioned serial number')
-        #     return redirect(url_for('transfer_item'))
-#
-# End code block
-
-    return render_template('transfer.html', title='Transfer item', transfer=transfer, Locations=Location, Item=Item, itemLocation=itemLocation, ItemName=ItemName)
 
 
 @newapp.route('/transfer_log')
