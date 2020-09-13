@@ -1,0 +1,43 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.134.1/containers/docker-existing-dockerfile
+{
+	// "name": "simple-inventory-dev",
+	// "image": "localhost/simple-inventory-dev",
+
+	// "containerEnv": {"DATABASE_URL": "sqlite:////opt/simple-inventory/data/inventory.db"},
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"editor.suggestSelection": "first",
+		"vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+		"python.jediEnabled": false,
+		"workbench.editor.enablePreview": false,
+		"files.autoSave": "afterDelay",
+		"git.autofetch": true,
+		"window.menuBarVisibility": "toggle",
+		"python.languageServer": "Microsoft",
+		"editor.wordWrap": "on",
+		"emmet.includeLanguages": {
+			"jinja-html": "html"
+		}
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"samuelcolvin.jinjahtml", 
+		"ms-python.python", 
+		"VisualStudioExptTeam.vscodeintellicode", 
+		"ms-azuretools.vscode-docker", 
+		"truman.autocomplate-shell"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [8000],
+
+	// Uncomment the next line to run commands after the container is created - for example installing curl.
+	// "postCreateCommand": "pip3 install gunicorn flask flask-migrate flask-wtf flask-sqlalchemy pylint autopep8 --disable-pip-version-check --no-cache-dir && apt update && apt install -y git",
+
+	// "mounts": [ "type=volume,source=simple-inventory-dev,target=/opt/simple-inventory/data" ],
+
+}
