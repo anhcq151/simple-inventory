@@ -11,16 +11,18 @@ Containing basic features which match my personal requirements:
 
 ## Install
 
-Prerequisites:
-
-- `python 3.6` or newer
-- `pipenv`
-
 Clone this repo
 
 ```bash
 git clone https://github.com/anhcq151/simple-inventory.git
 ```
+
+### Quick run under development environment
+
+Prerequisites:
+
+- `python 3.6` or newer
+- `pipenv`
 
 Change to cloned directory then install
 
@@ -33,4 +35,20 @@ Start development server
 ```bash
 pipenv shell
 flask run
+```
+
+### Run in container
+
+Prerequisites:
+
+- `podman` version 1.9 or newer and `buildah`
+
+Execute `devcontainer.sh` script under [.devcontainer](.devcontainer) directory to start using this app.
+
+If `docker` is your preference, change to cloned repo and run:
+
+```bash
+docker volume create simple-inventory
+docker build --tag simple-inventory .
+docker run -d --mount type=volume,source=simple-inventory,destination=/opt/simple-inventory/data --name simple-inventory --publish 8000:5000 simple-inventory
 ```
