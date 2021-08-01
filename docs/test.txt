@@ -1,0 +1,41 @@
+AsciiDoc Home Page
+==================
+// Web page meta data.
+:keywords:    AsciiDoc, DocBook, EPUB, PDF, ebooks, slideshow, slidy, man page
+:description: AsciiDoc is a text document format for writing notes,  +
+              documentation, articles, books, ebooks, slideshows,    +
+              web pages, man pages and blogs.  AsciiDoc files can be +
+              translated to many formats including HTML, PDF, EPUB,  +
+              man page.
+
+
+.{revdate}: AsciiDoc {revnumber} Released
+************************************************************************
+Read the link:CHANGELOG.html[CHANGELOG] for release highlights and a
+full list of all additions, changes and bug fixes. Changes are
+documented in the updated link:userguide.html[User Guide]. See the
+link:INSTALL.html[Installation page] for downloads and and
+installation instructions.
+************************************************************************
+
+Introduction
+------------
+{description}
+
+AsciiDoc.py is a legacy processor for this syntax, handling an older
+rendition of AsciiDoc. As such, this will not properly handle the
+https://projects.eclipse.org/projects/technology.asciidoc[current AsciiDoc specification].
+It is suggested that unless you specifically require the AsciiDoc.py
+toolchain, you should find a processor that handles the modern AsciiDoc
+syntax.
+
+AsciiDoc.py is highly configurable: both the AsciiDoc source file syntax
+and the backend output markups (which can be almost any type of
+SGML/XML markup) can be customized and extended by the user.
+
+AsciiDoc.py is free software and is licensed under the terms of the 'GNU
+General Public License version 2' (GPLv2).
+
+TIP: The pages you are reading were written using AsciiDoc, to view
+the corresponding AsciiDoc source click on the *Page Source* menu item
+in the left hand margin.
