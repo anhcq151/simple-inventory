@@ -3,6 +3,8 @@
 My very first python webapp, using Flask.
 (STILL IN DEVELOPMENT...)
 
+View link:/test[test.txt] content
+
 Containing basic features which match my personal requirements:
 
 * Asset information: name/type, location, status, description
