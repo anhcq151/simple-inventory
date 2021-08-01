@@ -1,0 +1,28 @@
+name: Generate github pages
+
+on:
+  push: 
+    branches: [ gh-pages ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install asciidoctor
+        run: apt-get install -y asciidoctor
+
+      - name: Convert asciidoc files to html
+        run: find docs/ -name *.adoc -exec asciidoctor {} \;
+
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: doc-pages-uat
+          build_dir: docs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
