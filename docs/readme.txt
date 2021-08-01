@@ -3,7 +3,7 @@
 My very first python webapp, using Flask.
 (STILL IN DEVELOPMENT...)
 
-View link:/test[test.txt] content
+View link:/test/test.html[test] content
 
 Containing basic features which match my personal requirements:
 
