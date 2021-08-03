@@ -4,6 +4,7 @@ My very first python webapp, using Flask.
 (STILL IN DEVELOPMENT...)
 
 View link:./test/test.html[test] content
+View link:./test/playio-vpn.html[playio-vpn] overview
 
 Containing basic features which match my personal requirements:
 
@@ -49,7 +50,7 @@ Prerequisites:
 
 * `podman` version 1.9 or newer and `buildah`
 
-Execute `devcontainer.sh` script under link:.devcontainer[.devcontainer] directory to start using this app.
+Execute `devcontainer.sh` script under link:https://github.com/anhcq151/simple-inventory/tree/master/.devcontainer[.devcontainer] directory to start using this app.
 
 If `docker` is your preference, change to cloned repo and run:
 
