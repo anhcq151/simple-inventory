@@ -199,4 +199,4 @@ ansible-playbook wf-vpnc-rollout.yml -e 'debug=1' -e '{"args_vpn_state_test_doma
 
 === Docker
 
-* See `docker-compose` dev version link:../../docker/vpnc-deployer-dkc.yml[here]
+* See `docker-compose` dev version link:https://github.com/play-iot/iot-vpn/blob/main/docker/vpnc-deployer-dkc.yml[here]

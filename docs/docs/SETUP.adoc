@@ -1,14 +1,14 @@
 = Setup Development Environment
 
-* link:./scripts[scripts] folder contains some linux script to build/run `vpnserver`/`vpnc`/`vpnddns` and shared artifact to `vagrant`
-* link:./docker[docker] folder contains a list of `vpnserver`/`vpnc`/`vpnddns` `dockerfile` and `docker-compose`
+* link:https://github.com/play-iot/iot-vpn/tree/main/scripts[scripts] folder contains some linux script to build/run `vpnserver`/`vpnc`/`vpnddns` and shared artifact to `vagrant`
+* link:https://github.com/play-iot/iot-vpn/tree/main/docker[docker] folder contains a list of `vpnserver`/`vpnc`/`vpnddns` `dockerfile` and `docker-compose`
 
 == Vagrant
 
 It is used for test VPN client CLI in the specific environment/`OS`.
 
-Use link:./scripts/vagrant.sh[./scripts/vagrant.sh] to `up`/`halt`/`destroy`/`status`/`port`/`ssh` one or multiple `vagrant` boxes.
-The `vagrant` box parameter is one of folder name in link:vagrant[./vagrant]
+Use link:https://github.com/play-iot/iot-vpn/blob/main/scripts/vagrant.sh[vagrant.sh] to `up`/`halt`/`destroy`/`status`/`port`/`ssh` one or multiple `vagrant` boxes.
+The `vagrant` box parameter is one of folder name in link:https://github.com/play-iot/iot-vpn/blob/main/vagrant[vagrant]
 
 For example:
 
@@ -123,7 +123,7 @@ pipenv shell
 
 ==== Build and test
 
-link:cli/python/docker/vpnc.Dockerfile[vpnclient.Dockerfile]
+link:https://github.com/play-iot/iot-vpn/blob/main/cli/python/docker/vpnc.Dockerfile[vpnc.Dockerfile]
 
 [,bash]
 ----
@@ -157,7 +157,7 @@ $ PLATFORMS="linux/arm/v7,linux/arm64" ./scripts/docker.vpntool.sh c true
 
 === VPNC Deployer
 
-link:cli/ansible/docker/vpnc-deployer.Dockerfile[vpnc-deployer.Dockerfile]
+link:https://github.com/play-iot/iot-vpn/blob/main/cli/ansible/docker/vpnc-deployer.Dockerfile[vpnc-deployer.Dockerfile]
 
 [,bash]
 ----
@@ -168,7 +168,7 @@ Please read xref:./cli/ansible/README.adoc[VPNC Deployer] to see how it works ba
 
 === VPN DDNS
 
-link:cli/python/docker/vpnddns.Dockerfile[vpnddns.Dockerfile]
+link:https://github.com/play-iot/iot-vpn/blob/main/cli/python/docker/vpnddns.Dockerfile[vpnddns.Dockerfile]
 
 [,bash]
 ----

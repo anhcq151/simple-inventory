@@ -1,15 +1,14 @@
 = PlayIO VPN Home Page
 
-:icons: font
+// :icons: font
+
 
 *play-IO* IIoT VPN solution
 
-:toc: left
 
 == Overview
 
 image::../img/vpnserver.png[softether]
-icon:square[]
 
 == Server Infrastructure
 
@@ -45,7 +44,7 @@ The `CLI` application syncs every 2 minutes VPN client IP addresses to private G
 | OpenWRT
 | 18.x/19.x
 | `ARMv7`/`ARM64`/`Mips`
-| &#10004;
+| &#10017;
 
 | Ubuntu
 | 16.x/18.x/20.x
