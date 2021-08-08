@@ -8,7 +8,7 @@
 
 == Overview
 
-image::./.github/vpnserver.png[softether]
+image::../img/vpnserver.png[softether]
 icon:square[]
 
 == Server Infrastructure
