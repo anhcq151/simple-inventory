@@ -1,16 +1,18 @@
 = PlayIO VPN Home Page
 
-// :icons: font
-
-
 *play-IO* IIoT VPN solution
-
 
 == Overview
 
 image::../img/vpnserver.png[softether]
 
 == Server Infrastructure
+
+Play-IO VPN solution provides secured connection to Corporate infrastructure as well as centralized user, iot device and credential management
+
+=== VPN Server
+
+Server configuration is described link:./cli/python/OVERVIEW.adoc[here]
 
 === VPN DDNS
 
@@ -44,7 +46,7 @@ The `CLI` application syncs every 2 minutes VPN client IP addresses to private G
 | OpenWRT
 | 18.x/19.x
 | `ARMv7`/`ARM64`/`Mips`
-| &#10017;
+| &#10004;
 
 | Ubuntu
 | 16.x/18.x/20.x
@@ -97,7 +99,8 @@ The `CLI` application syncs every 2 minutes VPN client IP addresses to private G
 
 ==== How to use
 
-Please read xref:./cli/python/src/client/VPNC_README.adoc[VPNC README]
+* xref:./cli/python/src/client/VPNC_README.adoc[VPNC README]
+* xref:./cli/python/src/command/README.adoc[Commands]
 
 === Client Deployer (VPNC Deployer)
 
