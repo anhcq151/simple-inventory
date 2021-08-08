@@ -45,7 +45,7 @@ The `CLI` application syncs every 2 minutes VPN client IP addresses to private G
 | OpenWRT
 | 18.x/19.x
 | `ARMv7`/`ARM64`/`Mips`
-| &#10017;
+| &#10004;
 
 | Ubuntu
 | 16.x/18.x/20.x
