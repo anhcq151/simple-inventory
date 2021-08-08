@@ -17,8 +17,8 @@ jobs:
 
       - name: Convert asciidoc files to html
         run: |
-          docker run --rm -d -v $(pwd)/docs:/documents asciidoctor/docker-asciidoctor find . -name *.adoc -exec asciidoctor -a toc -a icons=font {} \;
-          find ./docs -name *.adoc -exec rm {} \;
+          docker run --rm -d -v $(pwd):/documents asciidoctor/docker-asciidoctor find docs/ -name *.adoc -exec asciidoctor -a toc -a icons=font {} \;
+          find docs/ -name *.adoc -exec rm {} \;
 
       - name: Deploy to GitHub Pages
         if: success()
