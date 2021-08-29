@@ -7,10 +7,10 @@
 * Download the latest version `vpnc-deployer-cli` in https://github.com/play-iot/iot-vpn/releases[playio-vpn/releases] and copy to anywhere in *YOUR LINUX COMPUTER*
 * Install https://docs.docker.com/engine/install[`docker`] and https://docs.docker.com/compose/install/[`docker-compose`]
 
-==== Tips
+[TIP]
 
+====
 For convenient, setup download tool https://github.com/zero88/gh-release-downloader[ghrd] to quick download artifact by version on GitHub.
-
 This is setup script for `Ubuntu`/`Debian` distro
 
 [,bash]
@@ -21,6 +21,7 @@ export GHRDVER=1.1.2 && sudo curl -L https://github.com/zero88/gh-release-downlo
   && sudo apt install jq -y \
   && unset GHRDVER
 ----
+====
 
 ==== Download tool
 
