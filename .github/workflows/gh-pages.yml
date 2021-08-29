@@ -27,6 +27,6 @@ jobs:
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
-          build_dir: target/generated-docs
+          build_dir: docs/target/generated-docs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
